@@ -1,0 +1,25 @@
+Resources:
+  LAB1EC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      AvailabilityZone: eu-west-1a
+      InstanceType: t2.micro
+      KeyName: TU_Dublin
+      ImageId: ami-0bb3fad3c0286ebd5
+      SecurityGroups: [!Ref 'LAB1SecurityGroup']
+  LAB1SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SSH access
+      SecurityGroupIngress:
+        IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+  LAB1IPAddress:
+    Type: AWS::EC2::EIP
+  IPAssoc:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      InstanceId: !Ref 'LAB1EC2Instance'
+      EIP: !Ref 'LAB1IPAddress'
